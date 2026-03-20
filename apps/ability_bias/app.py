@@ -136,7 +136,7 @@ class AbilityBias(EstimationConcept):
             "delta_1_pop": delta_1_pop,
         }
 
-    def educational_sections(self, depth: str = "undergraduate") -> list:
+    def educational_sections(self) -> list:
         sections = [
             ("What is ability bias?",
              "The **Mincer earnings equation** regresses log wages on years "
@@ -181,9 +181,8 @@ class AbilityBias(EstimationConcept):
              "- **Increase n**: sampling variance shrinks, estimates converge "
              "to their probability limits, and the bias becomes more visible."),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Formal derivation",
+        sections.append((
+                "Formal derivation (Advanced)",
                 "Write the DGP in matrix form: **y** = **X**β + ε where "
                 "**X** = [**1**, **S**, **A**]. The short regression omits "
                 "**A**, so:\n\n"
@@ -233,8 +232,6 @@ def main():
     sigma = st.sidebar.slider("Wage noise (σ)", 0.5, 10.0, 3.0, 0.5)
 
     st.sidebar.markdown("---")
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
     use_seed = st.sidebar.checkbox("Fix random seed", value=True)
     seed = 42 if use_seed else None
 
@@ -452,7 +449,7 @@ in the estimated return to schooling. The OVB formula
             f"  Schooling  = {result['delta'][1]:.3f}")
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")

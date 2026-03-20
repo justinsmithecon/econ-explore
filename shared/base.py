@@ -76,7 +76,7 @@ class InteractiveConcept(ABC):
         """
         ...
 
-    def educational_sections(self, depth: str = "undergraduate") -> list[tuple[str, str]]:
+    def educational_sections(self) -> list[tuple[str, str]]:
         """Optional learn-more content as (title, markdown_body) pairs."""
         return []
 

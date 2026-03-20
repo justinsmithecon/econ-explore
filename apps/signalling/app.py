@@ -167,7 +167,7 @@ class SpenceSignalling(EquilibriumConcept):
             "pareto_dominated": pareto_dominated,
         }
 
-    def educational_sections(self, depth: str = "undergraduate") -> list:
+    def educational_sections(self) -> list:
         sections = [
             ("Why education can be pure waste",
              "In the human capital model (Becker, 1964), education raises "
@@ -210,9 +210,8 @@ class SpenceSignalling(EquilibriumConcept):
              "Empirically distinguishing the two is one of the hardest "
              "problems in labour economics."),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Formal equilibrium conditions",
+        sections.append((
+                "Formal equilibrium conditions (Advanced)",
                 "A **separating Perfect Bayesian Equilibrium** consists of:\n\n"
                 "1. **Strategies**: H chooses e = e*, L chooses e = 0\n"
                 "2. **Beliefs**: firms believe Pr(H | e ≥ e*) = 1, "
@@ -265,10 +264,6 @@ def main():
     e_star_frac = st.sidebar.slider(
         "Signal threshold (e*) position", 0.0, 1.0, 0.5, 0.05,
         help="0 = minimum viable signal (Riley), 1 = maximum")
-
-    st.sidebar.markdown("---")
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
 
     p = {"theta_H": theta_H, "theta_L": theta_L, "c_H": c_H, "c_L": c_L,
          "lam": lam, "e_star_frac": e_star_frac}
@@ -545,7 +540,7 @@ and the first-best (perfect information).
               help="θ_L ≥ θ_H − c_L·e*  ⟺  θ_H − c_L·e* − θ_L ≤ 0")
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")

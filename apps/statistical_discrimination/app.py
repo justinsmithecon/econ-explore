@@ -145,7 +145,7 @@ class StatisticalDiscrimination(EquilibriumConcept):
             return eq["intercept_A"] + eq["slope_A"] * s
         return eq["intercept_B"] + eq["slope_B"] * s
 
-    def educational_sections(self, depth: str = "undergraduate") -> list:
+    def educational_sections(self) -> list:
         sections = [
             ("What is statistical discrimination?",
              "**Taste-based discrimination** (Becker, 1957) assumes employers "
@@ -190,9 +190,8 @@ class StatisticalDiscrimination(EquilibriumConcept):
              "hiring more Group B workers generates better information about "
              "them, signals improve over time"),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Bayesian updating derivation",
+        sections.append((
+                "Bayesian updating derivation (Advanced)",
                 "With θ ~ N(μ_g, σ²_θ) and s | θ ~ N(θ, σ²_ε_g), the "
                 "posterior is:\n\n"
                 r"$$E[\theta \mid s, g] = \frac{\sigma^2_\varepsilon}{"
@@ -236,10 +235,6 @@ def main():
                                     help="Lower = more precise signal")
     sigma_eps_B = st.sidebar.slider("Group B noise (σ_ε_B)", 0.5, 15.0, 6.0, 0.5,
                                     help="Lower = more precise signal")
-
-    st.sidebar.markdown("---")
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
 
     p = {"mu_A": mu_A, "mu_B": mu_B, "sigma_theta": sigma_theta,
          "sigma_eps_A": sigma_eps_A, "sigma_eps_B": sigma_eps_B}
@@ -451,7 +446,7 @@ leads to different wage schedules — even for workers with the same signal.
             f"  Posterior var        = {eq['post_var_B']:.2f}")
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")

@@ -138,7 +138,7 @@ class LabourDemand(EquilibriumConcept):
             "total_effect": total_effect,
         }
 
-    def educational_sections(self, depth: str = "undergraduate") -> list:
+    def educational_sections(self) -> list:
         sections = [
             ("Substitution effect",
              "When wages rise, labour becomes **relatively more expensive** "
@@ -167,9 +167,8 @@ class LabourDemand(EquilibriumConcept):
              "This is why the labour demand curve is unambiguously downward-"
              "sloping, even though the labour supply curve can bend backward."),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Shephard's lemma and the cost function",
+        sections.append((
+                "Shephard's lemma and the cost function (Advanced)",
                 "With Cobb-Douglas Y = L^α K^(1-α), the unit cost function is:\n\n"
                 r"$$c(w,r) = \left(\frac{w}{\alpha}\right)^\alpha "
                 r"\left(\frac{r}{1-\alpha}\right)^{1-\alpha}$$"
@@ -208,10 +207,6 @@ def main():
     st.sidebar.subheader("Output demand")
     P_bar = st.sidebar.slider("Demand intercept (P̄)", 10.0, 100.0, 50.0, 5.0)
     delta = st.sidebar.slider("Demand slope (δ)", 0.1, 5.0, 1.0, 0.1)
-
-    st.sidebar.markdown("---")
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
 
     p = {"alpha": alpha, "w_0": w_0, "w_1": w_1, "r": r,
          "P_bar": P_bar, "delta": delta}
@@ -426,7 +421,7 @@ scale effect (the output change as supply shifts along the demand curve).
     c3.metric("Total effect", f"{eq['total_effect']:+.2f}")
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")

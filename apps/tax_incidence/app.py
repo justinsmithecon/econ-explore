@@ -156,7 +156,7 @@ class TaxIncidence(EquilibriumConcept):
             "elasticity_d": elasticity_d, "elasticity_s": elasticity_s,
         }
 
-    def educational_sections(self, depth: str = "undergraduate") -> list:
+    def educational_sections(self) -> list:
         sections = [
             ("Why doesn't statutory incidence matter?",
              "Imagine a \\$5 tax on sellers. The supply curve shifts up by \\$5 — "
@@ -194,9 +194,8 @@ class TaxIncidence(EquilibriumConcept):
              "more revenue on expensive goods and are the most common form of "
              "sales tax worldwide."),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Elasticity formula for tax incidence",
+        sections.append((
+                "Elasticity formula for tax incidence (Advanced)",
                 "With linear supply and demand, the buyer's share of a per-unit tax is:\n\n"
                 r"$$\frac{\text{Buyer's burden}}{t} = \frac{E_s}{E_s + E_d} "
                 r"= \frac{1/b_s}{1/b_s + 1/b_d} = \frac{b_d}{b_d + b_s}$$"
@@ -249,10 +248,6 @@ def main():
         tax_rate = tax_rate_pct / 100.0
 
     statutory = st.sidebar.selectbox("Tax levied on", ["Sellers", "Buyers"])
-
-    st.sidebar.markdown("---")
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
 
     p = {
         "a_d": a_d, "b_d": b_d,
@@ -423,7 +418,7 @@ economic outcome.
     )
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")

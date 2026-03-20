@@ -146,7 +146,7 @@ class LabourSupply(EquilibriumConcept):
         hours = np.array([T - (1 - beta) * (w * T + V) / w for w in wages])
         return wages, hours
 
-    def educational_sections(self, depth: str = "undergraduate") -> list:
+    def educational_sections(self) -> list:
         sections = [
             ("Substitution effect",
              "When the wage rises, each hour of leisure now costs more in "
@@ -187,9 +187,8 @@ class LabourSupply(EquilibriumConcept):
              "have a backward-bending supply curve but never an upward-"
              "sloping demand curve."),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Slutsky equation for labour supply",
+        sections.append((
+                "Slutsky equation for labour supply (Advanced)",
                 "The Slutsky equation decomposes the wage effect on hours:\n\n"
                 r"$$\frac{\partial h}{\partial w} = "
                 r"\underbrace{\frac{\partial h^c}{\partial w}}_{\text{substitution}} "
@@ -236,10 +235,6 @@ def main():
     st.sidebar.subheader("Wage change")
     w_0 = st.sidebar.slider("Initial wage (w₀)", 1.0, 30.0, 10.0, 0.5)
     w_1 = st.sidebar.slider("New wage (w₁)", 1.0, 30.0, 15.0, 0.5)
-
-    st.sidebar.markdown("---")
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
 
     p = {"beta": beta, "T": T, "w_0": w_0, "w_1": w_1, "V": V}
     eq = concept.compute_equilibrium(p)
@@ -443,7 +438,7 @@ right shows how hours vary across all wages.
     c3.metric("Total effect", f"{eq['total_effect']:+.2f}")
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")

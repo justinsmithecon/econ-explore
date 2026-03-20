@@ -146,7 +146,7 @@ class HumanCapital(InteractiveConcept):
             "k": k,
         }
 
-    def educational_sections(self, depth: str = "undergraduate") -> list:
+    def educational_sections(self) -> list:
         sections = [
             ("How to think about education as an investment",
              "Going to school is like buying an asset that pays off over your "
@@ -174,9 +174,8 @@ class HumanCapital(InteractiveConcept):
              "around 10–15%, well above most discount rates — suggesting "
              "college is a good financial investment on average."),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Present value formula",
+        sections.append((
+                "Present value formula (Advanced)",
                 "The net present value of the education investment is:\n\n"
                 r"$$\text{NPV} = \sum_{t=0}^{k-1} \frac{-C_t - w_0(1+g)^t}{(1+r)^t} "
                 r"+ \sum_{t=k}^{T-1} \frac{w_1(1+g)^{t-k} - w_0(1+g)^t}{(1+r)^t}$$"
@@ -241,10 +240,6 @@ def main():
     st.sidebar.subheader("Discounting")
     r = st.sidebar.slider("Discount rate (%)", 0.0, 15.0, 5.0, 0.5)
     T = st.sidebar.slider("Career horizon (years)", 20, 50, 40, 1)
-
-    st.sidebar.markdown("---")
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
 
     p = {"w_0": w_0, "w_1": w_1, "k": k, "tuition": tuition,
          "g": g, "r": r, "T": T}
@@ -412,7 +407,7 @@ education investment. All values are discounted at the chosen discount rate.
 
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")

@@ -97,8 +97,8 @@ class CLTDemo(SamplingConcept):
     def render(self, params, depth="undergraduate"):
         pass
 
-    def educational_sections(self, depth="undergraduate"):
-        sections = [
+    def educational_sections(self):
+        return [
             ("What is the Central Limit Theorem?",
              "The **Central Limit Theorem (CLT)** says that if you take many "
              "random samples of size *n* from *any* population with finite mean μ "
@@ -114,17 +114,13 @@ class CLTDemo(SamplingConcept):
              "- It's why the normal distribution appears so often in practice\n\n"
              "Without the CLT, we'd need to know the exact population distribution "
              "to do hypothesis testing — which is rarely possible."),
+            ("Berry-Esseen bound (Advanced)",
+             "The **Berry-Esseen theorem** quantifies the rate of convergence:\n\n"
+             r"$$\sup_x \left| P\left(\frac{\bar{x} - \mu}{\sigma/\sqrt{n}} \le x\right) - \Phi(x) \right| "
+             r"\le \frac{C \cdot \rho}{\sigma^3 \sqrt{n}}$$"
+             "\n\nwhere ρ = E[|X - μ|³] is the third absolute moment and C ≤ 0.4748. "
+             "This tells us convergence is O(1/√n) and is slower for skewed distributions."),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Berry-Esseen bound",
-                "The **Berry-Esseen theorem** quantifies the rate of convergence:\n\n"
-                r"$$\sup_x \left| P\left(\frac{\bar{x} - \mu}{\sigma/\sqrt{n}} \le x\right) - \Phi(x) \right| "
-                r"\le \frac{C \cdot \rho}{\sigma^3 \sqrt{n}}$$"
-                "\n\nwhere ρ = E[|X - μ|³] is the third absolute moment and C ≤ 0.4748. "
-                "This tells us convergence is O(1/√n) and is slower for skewed distributions."
-            ))
-        return sections
 
 
 def main():
@@ -141,9 +137,6 @@ def main():
     n_samples = st.sidebar.slider("Number of samples", min_value=100, max_value=10000,
                                   value=1000, step=100,
                                   help="How many sample means to draw")
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
-
     use_seed = st.sidebar.checkbox("Fix random seed", value=True)
     seed = 42 if use_seed else None
 
@@ -240,7 +233,7 @@ normal curve — that's the Central Limit Theorem in action.
     )
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")

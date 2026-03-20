@@ -123,7 +123,7 @@ class OaxacaBlinder(EstimationConcept):
             "unexplained_detail": unexplained_detail,
         }
 
-    def educational_sections(self, depth: str = "undergraduate") -> list:
+    def educational_sections(self) -> list:
         sections = [
             ("What is the Oaxaca-Blinder decomposition?",
              "The **Oaxaca-Blinder decomposition** (1973) is a statistical method "
@@ -160,9 +160,8 @@ class OaxacaBlinder(EstimationConcept):
              "This app uses Group A as the reference (the more common convention when "
              "Group A is the higher-wage group)."),
         ]
-        if depth == "graduate":
-            sections.append((
-                "Cotton-Neumark pooled decomposition",
+        sections.append((
+                "Cotton-Neumark pooled decomposition (Advanced)",
                 "To avoid the index number problem of choosing a reference group, "
                 "**Cotton (1988)** and **Neumark (1988)** proposed using the pooled "
                 "regression coefficients β* as the non-discriminatory benchmark:\n\n"
@@ -204,8 +203,6 @@ def main():
 
     st.sidebar.markdown("---")
     sigma = st.sidebar.slider("Wage noise (σ)", 0.5, 10.0, 3.0, 0.5)
-    depth = st.sidebar.radio("Depth", ["undergraduate", "graduate"],
-                             format_func=lambda x: x.title())
     use_seed = st.sidebar.checkbox("Fix random seed", value=True)
     seed = 42 if use_seed else None
 
@@ -409,7 +406,7 @@ sample size or decreasing the noise to see them converge.
             st.text(f"  {name:12s}  true = {true_val:6.2f}   est = {est_val:6.2f}")
 
     # Educational sections
-    sections = concept.educational_sections(depth)
+    sections = concept.educational_sections()
     if sections:
         st.markdown("---")
         st.subheader("Learn More")
